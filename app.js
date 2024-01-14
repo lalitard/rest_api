@@ -7,10 +7,16 @@ var logger = require('morgan');
 const swaggerUi = require('swagger-ui-express')
 /* REFERENCIA AL ARCHIVO GENERADO */
 const swaggerFile = require('./swagger_output.json')
+/* MÓDULO dotenv */
+const dotenv = require('dotenv');
+/* CARGA DE DATOS DE CONFIGURACION EN MEMORIA */
+dotenv.config();
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var suppliersRouter = require('./routes/suppliers');
+/* Referencia al middleware */
+var authJWT = require('./middleware/auth');
 
 
 var app = express();
@@ -30,6 +36,8 @@ app.use('/users', usersRouter);
 app.use('/suppliers', suppliersRouter);
 /* CONFIGURACIÓN DE LA RUTA A LA DOCUMENTACIÓN */
 app.use('/documentation', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+/* Agregue el middleware para la ruta '/suppliers' */
+app.use('/suppliers', authJWT, suppliersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

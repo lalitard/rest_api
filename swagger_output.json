@@ -24,7 +24,7 @@
     }
   ],
   "paths": {
-    "/suppliers/findAll/json": {
+    "/suppliers/findAll": {
       "get": {
         "description": "",
         "responses": {
